@@ -1,0 +1,73 @@
+{% extends "admin.html" %}
+
+{% block content %}
+    <style>
+        .user-item {
+            list-style-type: none;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .user-info {
+            display: inline-block;
+            vertical-align: top;
+            margin-right: 20px;
+        }
+
+        .username, .email, .status-label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .status-form {
+            display: inline-block;
+        }
+
+        .status-select {
+            margin-right: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .update-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .update-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <h2>User List</h2>
+    <ul>
+        {% for user in data %}
+            <li class="user-item">
+                <div class="user-info">
+                    <span class="username"><strong>Никнейм:</strong> {{ user.username }}</span>
+                    <span class="email"><strong>Почта:</strong> {{ user.email }}</span>
+                    <span class="status-label"><strong>Статус:</strong> {{ user.status }}</span>
+                </div>
+                {% if current_user.status == 'Администратор' %}
+                    <form action="/admin/print_users" method="post" class="status-form">
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                        <select name="status" class="status-select">
+                            <option>Пользователь</option>
+                            <option>Администратор</option>
+                        </select>
+                        <button type="submit" class="update-button">Изменить</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
